@@ -1,8 +1,9 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
+#include <fstream> // 파일 입출력에 이용하는 헤더 파일입니다. 
+#include <sstream> // stringstream을 이용하여 문자열을 파싱하기 위한 헤더 파일입니다. 
 #include <string>
 #include <vector>
+
 
 class Product {
 public:
@@ -15,11 +16,33 @@ public:
     void setType(const std::string& type) { type_ = type; }
     std::string getType() const { return type_; }
 
+    // 상품 정보를 파일로부터 읽어올 때 사용됩니다. 
+    friend std::istream& operator>>(std::istream& is, Product& product) {
+        std::string line;
+        if (std::getline(is, line)) {
+            std::stringstream ss(line);
+            std::string name, type;
+            int price;
+            ss >> name >> price >> type;
+            product.setName(name);
+            product.setPrice(price);
+            product.setType(type);
+        }
+        return is;
+    }
+
+    // 상품 정보를 파일에 쓸 때 사용됩니다. 
+    friend std::ostream& operator<<(std::ostream& os, const Product& product) {
+        os << product.getName() << " " << product.getPrice() << " " << product.getType() << std::endl;
+        return os;
+    }
+
 private:
     std::string name_;
     int price_;
     std::string type_;
 };
+
 
 class ProductList {
 public:
@@ -121,64 +144,43 @@ public:
         }
     }
 
-    bool SaveToFile(const std::string& filename) const {
-        std::ofstream file(filename);
-        if (!file.is_open()) {
-            std::cerr << "Failed to open file " << filename << " for writing\n";
-            return false;
+    // 상품 정보를 파일에 저장하는 함수입니다. 
+    void SaveProductListToFile(const std::string& filename) const {
+        std::ofstream fout(filename);
+        if (!fout) {
+            std::cout << "Failed to open file " << filename << std::endl;
+            return;
         }
-
         for (const auto& product : products_) {
-            file << product.getName() << "," << product.getPrice() << "," << product.getType() << "\n";
+            fout << product;
         }
-
-        file.close();
-        return true;
+        fout.close();
+        std::cout << "상품 리스트가 파일 " << filename << "에 저장되었습니다." << std::endl;
     }
 
-    bool LoadFromFile(const std::string& filename) {
-        std::ifstream file(filename);
-        if (!file.is_open()) {
-            std::cerr << "Failed to open file " << filename << " for reading\n";
-            return false;
+    // 상품 정보를 파일로부터 읽어오는 함수입니다. 
+    void LoadProductListFromFile(const std::string& filename) {
+        std::ifstream fin(filename);
+        if (!fin) {
+            std::cout << "Failed to open file " << filename << std::endl;
+            return;
         }
-
         products_.clear();
-
-        std::string line;
-        while (std::getline(file, line)) {
-            std::istringstream iss(line);
-            std::string name, type;
-            int price;
-
-            if (!(iss >> name >> price >> type)) {
-                std::cerr << "Failed to parse line: " << line << "\n";
-                return false;
-            }
-
-            Product product;
-            product.setName(name);
-            product.setPrice(price);
-            product.setType(type);
+        Product product;
+        while (fin >> product) {
             products_.push_back(product);
         }
-
-        file.close();
-        return true;
+        fin.close();
+        std::cout << "상품 리스트가 파일 " << filename << "에서 불러오기 완료되었습니다." << std::endl;
     }
 
 private:
     std::vector<Product> products_;
 };
 
+
 int main() {
     ProductList productList;
-    std::string filename = "products.csv";
-
-    bool loaded = productList.LoadFromFile(filename);
-    if (!loaded) {
-        std::cerr << "Failed to load products from file " << filename << "\n";
-    }
 
     while (true) {
         std::cout << "Choose an option:\n";
@@ -187,8 +189,9 @@ int main() {
         std::cout << "3: 상품 수정\n";
         std::cout << "4: 상품 제거\n";
         std::cout << "5: 상품 목록\n";
-        std::cout << "6: 저장\n";
-        std::cout << "7: 종료\n";
+        std::cout << "6: 파일에 상품 정보 저장하기\n";
+        std::cout << "7: 파일에서 상품 정보 불러오기\n";
+        std::cout << "8: 종료\n";
 
         int option;
         std::cin >> option;
@@ -204,13 +207,16 @@ int main() {
         } else if (option == 5) {
             productList.ListAllProducts();
         } else if (option == 6) {
-            bool saved = productList.SaveToFile(filename);
-            if (saved) {
-                std::cout << "Products saved to file " << filename << "\n";
-            } else {
-                std::cerr << "Failed to save products to file " << filename << "\n";
-            }
+            std::string filename;
+            std::cout << "상품 정보를 저장할 파일 이름을 입력하세요: ";
+            std::cin >> filename;
+            productList.SaveProductListToFile(filename);
         } else if (option == 7) {
+            std::string filename;
+            std::cout << "불러올 파일 이름을 입력하세요: ";
+            std::cin >> filename;
+            productList.LoadProductListFromFile(filename);
+        } else if (option == 8) {
             break;
         } else {
             std::cout << "Invalid option\n";
