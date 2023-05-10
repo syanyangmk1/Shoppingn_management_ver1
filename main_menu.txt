@@ -1,0 +1,7 @@
+===== Customer List =====
+1. Print customers
+2. Add a customer
+3. Modify a customer
+4. Delete a customer
+0. Exit
+Enter command:
