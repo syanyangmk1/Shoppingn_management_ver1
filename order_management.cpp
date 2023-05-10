@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <limits>
 
-class Order {
+// Order 클래스 선언 및 구현- createOrder, modifyOrder, getOrderNumber, getProductName 메소드를 포함
+
+class Order {                                             
 public:
     void createOrder(int number, const std::string& name){
         this->orderNumber = number;
@@ -31,13 +33,19 @@ private:
     std::string productName;
 };
 
-Order* searchOrder(std::vector<Order>& orders, int orderNumber){
+//searchOrder 함수: 주어진 주문 번호를 가진 주문을 찾아 반환하는 함수
+//주문 목록과 주문 번호를 입력받아 해당하는 주문 객체를 반환
+
+Order* searchOrder(std::vector<Order>& orders, int orderNumber){  //
     for(Order& order : orders){
         if (order.getOrderNumber() == orderNumber)
             return &order;
     }
     return nullptr;
 }
+
+//loadOrders 함수: 파일에서 주문 목록을 읽어오는 함수
+//ifstream을 사용하여 파일명을 입력받고 주문 목록에 주문을 추가
 
 void loadOrders(std::vector<Order>& orders, const char* filename){
     std::ifstream infile(filename);
@@ -60,6 +68,9 @@ void loadOrders(std::vector<Order>& orders, const char* filename){
     infile.close();
 }
 
+//saveOrders 함수: 주문 목록을 파일로 저장하는 함수
+// ofstream을 사용하여 주문 목록과 파일명을 입력받아 주문 목록을 파일로 쓰기
+
 void saveOrders(const std::vector<Order>& orders, const char* filename){
     std::ofstream outfile(filename);
     if (!outfile) {
@@ -71,11 +82,15 @@ void saveOrders(const std::vector<Order>& orders, const char* filename){
     }
     outfile.close();
 }
-
+//printOrders 함수: 주문 목록을 화면에 출력하는 함수
 void printOrders(std::vector<Order> &orders){
     for (const Order& order : orders)
         std::cout << order.getOrderNumber() << ' ' << order.getProductName() << std::endl;
 }
+
+//loadOrders를 호출하여 파일에서 주문 목록을 로드
+//- while 루프를 사용하여 사용자의 요청에 따라 주문 목록을 출력, 생성, 수정, 삭제, 검색, 종료 등의 작업을 수행
+//- 프로그램 종료 시에 saveOrders를 호출하여 변경된 주문 목록을 파일로 저장
 
 int main() {
     std::vector<Order> orders;
