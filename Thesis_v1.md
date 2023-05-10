@@ -7,7 +7,7 @@ Online shopping mall system based on C++</br>
 *Team 3</br>
 
 
-● 투고분야 : 온라인 쇼핑몰 관리 시스템</br>
+● **투고분야 : 온라인 쇼핑몰 관리 시스템**</br>
 
 ● Corresponding Author : Jaechang Shim</br>
 - Address : (36729) 1375 Gyeongdong-ro, Andong-si, Gyeongsangbuk-do, Republic of Korea</br>
@@ -17,13 +17,23 @@ Online shopping mall system based on C++</br>
 
 
 
- C++ 기반의 온라인 쇼핑몰 시스템</br>
+**C++ 기반의 온라인 쇼핑몰 시스템**</br>
 
 Online shopping mall system based on C++ </br>
 
-Abstract</br>
-  
-Keyword : E-commerce, Customer management, Product management, Order management, C++ based system </br>
+**Abstract**</br>
+The goal of this project is to create an accessible and efficient online shopping platform </br>
+that facilitates easy product search and purchase for customers,</br>
+while providing sellers with the tools to manage product information and sales. </br>
+To achieve this, the system incorporates various programming concepts such as</br>
+classes, inheritance, polymorphism, templates, and STL containers to ensure efficient management of product, customer, and order details.</br>
+Additionally, it uses file input/output techniques for reliable data storage and retrieval. </br>
+Key functions include comprehensive product, customer, and order management that cover</br>
+adding, modifying, deleting, searching, and displaying lists of the respective data. </br>
+With this system in place, businesses can expand their reach to a wider range of customers without geographical limitations, </br>
+enhancing user experience and convenience for all parties involved.</br>
+
+**Keyword** : E-commerce, Customer management, Product management, Order management, C++ based system </br>
 
 
 ## 1. 서론</br>
@@ -35,9 +45,9 @@ Keyword : E-commerce, Customer management, Product management, Order management,
 따라서 이번 프로젝트에서는 고객과 판매자 모두에게 편리하고 쉬운 사용 경험을 제공하며, 간단한 기능을 갖춘 온라인 쇼핑몰 시스템을 개발하고자 한다.</br>
 이 시스템의 관리자의 입장에서는 효율적인 관리를 위해 다양한 기능이 필요하다. 아래가 요구사항 및 주요 기능이다. </br>
 
- - 기능</br>
+ **- 기능**</br>
  
-□ 요구사항</br>
+□ **요구사항**</br>
 
 ○ 클래스를 사용하여 상품, 고객, 주문 정보를 표현</br>
 
@@ -49,7 +59,7 @@ Keyword : E-commerce, Customer management, Product management, Order management,
 
 ○ 파일 입출력을 사용하여 데이터 저장 및 로드 기능 구현</br>
 </br>
-□ 주요 기능</br>
+□ **주요 기능**</br>
 
 ○ 상품 관리: 상품 추가, 수정, 삭제, 검색, 목록 출력</br>
 
