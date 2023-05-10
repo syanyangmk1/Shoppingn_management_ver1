@@ -4,7 +4,16 @@
 #include <string>
 #include <vector>
 
-
+/* 상품 정보를 저장하는 클래스입니다. 이름, 가격, 종류의 정보를 저장할 수 있습니다.
+void setName(const std::string& name): 상품 이름을 설정합니다.
+std::string getName() const: 상품 이름을 반환합니다.
+void setPrice(int price): 상품 가격을 설정합니다.
+int getPrice() const: 상품 가격을 반환합니다.
+void setType(const std::string& type): 상품 종류를 설정합니다.
+std::string getType() const: 상품 종류를 반환합니다.
+friend std::istream& operator>>(std::istream& is, Product& product): 상품 정보를 파일로부터 읽어올 때 사용됩니다.
+friend std::ostream& operator<<(std::ostream& os, const Product& product): 상품 정보를 파일로 저장할 때 사용됩니다.
+*/
 class Product {
 public:
     void setName(const std::string& name) { name_ = name; }
@@ -31,7 +40,7 @@ public:
         return is;
     }
 
-    // 상품 정보를 파일에 쓸 때 사용됩니다. 
+    // 상품 정보를 파일로부터 읽어오며, 이를 위한 오버로드하기 위한 ">>" 연산자입니다.
     friend std::ostream& operator<<(std::ostream& os, const Product& product) {
         os << product.getName() << " " << product.getPrice() << " " << product.getType() << std::endl;
         return os;
@@ -42,8 +51,16 @@ private:
     int price_;
     std::string type_;
 };
-
-
+/*
+상품 정보를 관리하는 클래스입니다. Product 객체들을 vector로 관리합니다.
+void AddProduct(): 상품을 추가합니다.
+void SearchProduct() const: 상품을 검색합니다.
+void UpdateProductFromUserInput(): 상품 정보를 업데이트합니다.
+void RemoveProduct(): 상품을 제거합니다.
+void ListAllProducts() const: 모든 상품을 출력합니다.
+void SaveProductListToFile(const std::string& filename) const: 상품 리스트를 파일에 저장합니다.
+void LoadProductListFromFile(const std::string& filename): 파일로부터 상품 리스트를 불러옵니다.
+*/
 class ProductList {
 public:
     void AddProduct() {
@@ -178,7 +195,9 @@ private:
     std::vector<Product> products_;
 };
 
-
+/*사용자가 선택한 옵션에 따라 ProductList 클래스의 멤버 함수를 호출합니다.
+사용자가 1~8 이외의 옵션을 선택할 경우 "Invalid option"을 출력합니다.
+*/
 int main() {
     ProductList productList;
 
