@@ -69,7 +69,8 @@ enhancing user experience and convenience for all parties involved.</br>
 
 ### 2. 본론</br>
 
-***
+```
+
 void printCustomers(const std::vector<Customer>& customers) {
     std::cout << "Customers:" << std::endl;
     for (const auto& customer : customers) {
@@ -141,8 +142,8 @@ void SearchProduct() const {
 
         std::cout << "Product removed\n";
     }
+```
 
-***
 **(a) Product add/search/update/remove**</br>
 
 step-by-step explanation of the code:</br>
@@ -171,7 +172,7 @@ Checks whether the entered index is valid. If not, an error message is displayed
 Removes the product at the specified index using the erase method of the list (products_).</br>
 Outputs a message to inform the user that the product has been removed.</br>
 
-***
+```
 void addCustomer(std::vector<Customer>& customers) {
     std::string name, address;
     std::cout << "Enter customer name: ";
@@ -215,7 +216,7 @@ void deleteCustomer(std::vector<Customer>& customers) {
     }
     std::cout << "Customer not found." << std::endl << std::endl;
 }
-***
+```
  **(b)Customer add / modify / remove** </br>
 
 printCustomers function: This function prints the list of customers.</br>
