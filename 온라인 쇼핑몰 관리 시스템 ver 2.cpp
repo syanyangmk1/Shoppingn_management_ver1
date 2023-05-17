@@ -340,132 +340,168 @@ void printOrders(std::vector<Order>& orders) {
 }
 
 int main() {
-    ProductList productList;  // 상품 목록 객체 생성
-    std::vector<Customer> customers;  // 고객 목록 벡터 생성
-    std::vector<Order> orders;  // 주문 목록 벡터 생성
+    std::vector<Customer> customers;
+    std::vector<Order> orders;
+    ProductList productList;
+
+    // 파일로부터 고객 정보 로드
+    LoadCustomersFromFile(customers, "customers.txt");
+
+    // 파일로부터 주문 정보 로드
+    loadOrders(orders, "orders.txt");
+
     int choice;
-
     while (true) {
-        std::cout << "무엇을 하시겠습니까?\n";
-        std::cout << "1. 상품 추가\n";
-        std::cout << "2. 상품 검색\n";
-        std::cout << "3. 상품 정보 수정\n";
-        std::cout << "4. 상품 삭제\n";
-        std::cout << "5. 상품 리스트 출력\n";
-        std::cout << "6. 상품 리스트 파일 저장\n";
-        std::cout << "7. 상품 리스트 파일 불러오기\n";
-        std::cout << "8. 고객 추가\n";
-        std::cout << "9. 고객 정보 수정\n";
-        std::cout << "10. 고객 삭제\n";
-        std::cout << "11. 고객 목록 출력\n";
-        std::cout << "12. 고객 정보 파일 저장\n";
-        std::cout << "13. 고객 정보 파일 불러오기\n";
-        std::cout << "14. 주문 생성\n";
-        std::cout << "15. 주문 수정\n";
-        std::cout << "16. 주문 정보 삭제\n";
-        std::cout << "17. 주문 목록 출력\n";
-        std::cout << "18. 주문 정보 파일 저장\n";
-        std::cout << "19. 주문 정보 파일 불러오기\n";
-        std::cout << "20. 종료\n";
-
+        std::cout << "====== 상점 관리 프로그램 ======" << std::endl;
+        std::cout << "1. 고객 관리" << std::endl;
+        std::cout << "2. 상품 관리" << std::endl;
+        std::cout << "3. 주문 관리" << std::endl;
+        std::cout << "4. 종료" << std::endl;
+        std::cout << "메뉴를 선택하세요: ";
         std::cin >> choice;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        switch (choice) {
-        case 1:
-            productList.AddProduct();
-            break;
-        case 2:
-            productList.SearchProduct();
-            break;
-        case 3:
-            productList.UpdateProductFromUserInput();
-            break;
-        case 4:
-            productList.RemoveProduct();
-            break;
-        case 5:
-            productList.ListAllProducts();
-            break;
-        case 6:
-            productList.SaveProductListToFile("상품리스트.txt");
-            break;
-        case 7:
-            productList.LoadProductListFromFile("상품리스트.txt");
-            break;
-        case 8:
-            addCustomer(customers);
-            break;
-        case 9:
-            modifyCustomer(customers);
-            break;
-        case 10:
-            deleteCustomer(customers);
-            break;
-        case 11:
-            printCustomers(customers);
-            break;
-        case 12:
-            SaveCustomersToFile(customers, "고객정보.txt");
-            break;
-        case 13:
-            LoadCustomersFromFile(customers, "고객정보.txt");
-            break;
-        case 14: {
-            int orderNumber;
-            std::string productName;
-            std::cout << "주문 번호를 입력하세요: ";
-            std::cin >> orderNumber;
-            std::cout << "주문 상품의 이름을 입력하세요: ";
-            std::cin >> productName;
-            Order order;
-            order.createOrder(orderNumber, productName);
-            orders.push_back(order);
-            break;
-        }
-        case 15: {
-            int orderNumber;
-            std::string productName;
-            std::cout << "수정할 주문 번호를 입력하세요: ";
-            std::cin >> orderNumber;
-            Order* order = searchOrder(orders, orderNumber);
-            if (order) {
-                std::cout << "주문 상품의 이름을 입력하세요: ";
-                std::cin >> productName;
-                order->modifyOrder(orderNumber, productName);
-            }
-            else {
-                std::cout << "해당 주문이 없습니다.\n";
-            }
-            break;
-        }
-        case 16: {
-            int orderNumber;
-            std::cout << "삭제할 주문 번호를 입력하세요: ";
-            std::cin >> orderNumber;
-            for (auto it = orders.begin(); it != orders.end(); ++it) {
-                if (it->getOrderNumber() == orderNumber) {
-                    orders.erase(it);
-                    std::cout << "주문 정보가 삭제되었습니다.\n";
+        if (choice == 1) {
+            int customerChoice;
+            while (true) {
+                std::cout << "====== 고객 관리 ======" << std::endl;
+                std::cout << "1. 고객 목록 출력" << std::endl;
+                std::cout << "2. 고객 추가" << std::endl;
+                std::cout << "3. 고객 수정" << std::endl;
+                std::cout << "4. 고객 삭제" << std::endl;
+				std::cout << "5. 고객 정보 출력" << std::endl;
+                std::cout << "6. 고객 정보 저장" << std::endl;
+				std::cout << "7. 고객 정보 불러오기" << std::endl;
+				std::cout << "8. 이전 메뉴로" << std::endl;
+                std::cout << "메뉴를 선택하세요: ";
+                std::cin >> customerChoice;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                if (customerChoice == 1) {
+                    printCustomers(customers);
+                } else if (customerChoice == 2) {
+                    addCustomer(customers);
+                } else if (customerChoice == 3) {
+                    modifyCustomer(customers);
+                } else if (customerChoice == 4) {
+                    deleteCustomer(customers);
+                } else if (customerChoice == 5) {
+					printCustomers(customers);
+                } else if (customerChoice == 6) {
+					SaveCustomersToFile(customers, "고객정보.txt");
+                } else if (customerChoice == 7) {
+					LoadCustomersFromFile(customers, "고객정보.txt");
+                } else if (customerChoice == 8) {
                     break;
+                } else {
+                    std::cout << "유효하지 않은 선택입니다. 다시 선택해주세요." << std::endl;
                 }
             }
+        } else if (choice == 2) {
+            int productChoice;
+            while (true) {
+                std::cout << "====== 상품 관리 ======" << std::endl;
+                std::cout << "1. 상품 추가" << std::endl;
+                std::cout << "2. 상품 검색" << std::endl;
+                std::cout << "3. 상품 수정" << std::endl;
+                std::cout << "4. 상품 삭제" << std::endl;
+                std::cout << "5. 상품 목록 출력" << std::endl;
+                std::cout << "6. 상품 목록 저장" << std::endl;
+                std::cout << "7. 상품 목록 불러오기" << std::endl;
+                std::cout << "8. 이전 메뉴로" << std::endl;
+                std::cout << "메뉴를 선택하세요: ";
+                std::cin >> productChoice;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                if (productChoice == 1) {
+                    productList.AddProduct();
+                } else if (productChoice == 2) {
+                    productList.SearchProduct();
+                } else if (productChoice == 3) {
+                    productList.UpdateProductFromUserInput();
+                } else if (productChoice == 4) {
+                    productList.RemoveProduct();
+                } else if (productChoice == 5) {
+                    productList.ListAllProducts();
+                } else if (productChoice == 6) {
+                    productList.SaveProductListToFile("상품리스트.txt");
+                } else if (productChoice == 7) {
+                    productList.LoadProductListFromFile("상품리스트.txt");
+                } else if (productChoice == 8) {
+                    break;
+                } else {
+                    std::cout << "유효하지 않은 선택입니다. 다시 선택해주세요." << std::endl;
+                }
+            }
+        } else if (choice == 3) {
+            int orderChoice;
+            while (true) {
+                std::cout << "====== 주문 관리 ======" << std::endl;
+                std::cout << "1. 주문 추가" << std::endl;
+                std::cout << "2. 주문 수정" << std::endl;
+                std::cout << "3. 주문 삭제" << std::endl;
+                std::cout << "4. 주문 목록 출력" << std::endl;
+				std::cout << "5. 주문 목록 저장" << std::endl;
+				std::cout << "6. 주문 목록 출력" << std::endl;
+                std::cout << "7. 이전 메뉴로" << std::endl;
+                std::cout << "메뉴를 선택하세요: ";
+                std::cin >> orderChoice;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                if (orderChoice == 1) {
+					int orderNumber;
+					std::string productName;
+					std::cout << "주문 번호를 입력하세요: ";
+					std::cin >> orderNumber;
+					std::cout << "주문 상품의 이름을 입력하세요: ";
+					std::cin >> productName;
+					Order order;
+					order.createOrder(orderNumber, productName);
+					orders.push_back(order);
+					break;
+				} else if (orderChoice == 2) {
+					int orderNumber;
+					std::string productName;
+					std::cout << "수정할 주문 번호를 입력하세요: ";
+					std::cin >> orderNumber;
+					Order* order = searchOrder(orders, orderNumber);
+					if (order) {
+						std::cout << "주문 상품의 이름을 입력하세요: ";
+						std::cin >> productName;
+						order->modifyOrder(orderNumber, productName);
+					}
+					else {
+						std::cout << "해당 주문이 없습니다.\n";
+					}
+				break;
+				} else if (orderChoice == 3) {
+					int orderNumber;
+					std::cout << "삭제할 주문 번호를 입력하세요: ";
+					std::cin >> orderNumber;
+					for (auto it = orders.begin(); it != orders.end(); ++it) {
+						if (it->getOrderNumber() == orderNumber) {
+							orders.erase(it);
+							std::cout << "주문 정보가 삭제되었습니다.\n";
+							break;
+						}
+					}
+					break;
+				} else if (orderChoice == 4) {
+                    printOrders(orders);
+				} else if (orderChoice == 5) {
+                    saveOrders(orders, "주문정보.txt");
+				} else if (orderChoice == 6) {
+                    loadOrders(orders, "주문정보.txt");
+                } else if (orderChoice == 5) {
+                    break;
+                } else {
+                    std::cout << "유효하지 않은 선택입니다. 다시 선택해주세요." << std::endl;
+                }
+            }
+        } else if (choice == 4) {
             break;
-        }
-        case 17:
-            printOrders(orders);
-            break;
-        case 18:
-            saveOrders(orders, "주문정보.txt");
-            break;
-        case 19:
-            loadOrders(orders, "주문정보.txt");
-            break;
-        case 20:
-            std::cout << "프로그램을 종료합니다.\n";
-            return 0;
-        default:
-            std::cout << "잘못된 입력입니다. 다시 입력해주세요.\n";
-            break;
+        } else {
+            std::cout << "유효하지 않은 선택입니다. 다시 선택해주세요." << std::endl;
         }
     }
 
