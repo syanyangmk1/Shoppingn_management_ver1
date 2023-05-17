@@ -68,6 +68,7 @@ enhancing user experience and convenience for all parties involved.</br>
 
 
 ### 2. 본론</br>
+-main function (Customers, Product, Order) 
 
 ```
 
@@ -248,18 +249,110 @@ Informs the user that the customer information has been deleted.</br>
 Returns from the function.</br>
 If no matching customer is found, informs the user that the customer was not found.</br>
 
-***
+```
+class Order {                                             
+public:
+    void createOrder(int number, const std::string& name){
+        this->orderNumber = number;
+        this->productName = name;
+    }
 
-***
+    void modifyOrder(int number, const std::string& name){
+        this->orderNumber = number;
+        this->productName = name;
+    }
 
-※ 그림의 제목과 내용은 모두 영문으로 작성!!!!
+    int getOrderNumber() const {
+        return orderNumber;
+    }
+
+    const std::string& getProductName() const {
+        return productName;
+    }
+
+private:
+    int orderNumber;
+    std::string productName;
+};
+
+Order* searchOrder(std::vector<Order>& orders, int orderNumber){  //
+    for(Order& order : orders){
+        if (order.getOrderNumber() == orderNumber)
+            return &order;
+    }
+    return nullptr;
+}
+
+void loadOrders(std::vector<Order>& orders, const char* filename){
+    std::ifstream infile(filename);
+    if (!infile) {
+        std::cerr << "파일을 열 수 없습니다. \n";
+        return;
+    }
+
+    int number;
+    std::string name;
+
+    while (infile >> number >> name)
+    {
+        Order order;
+        order.createOrder(number, name);
+        orders.push_back(order);
+    }
+
+    infile.close();
+}
+
+void saveOrders(const std::vector<Order>& orders, const char* filename){
+    std::ofstream outfile(filename);
+    if (!outfile) {
+        std::cerr << "파일을 저장할 수 없습니다. \n";
+        return;
+    }
+    for (const Order& order : orders) {
+        outfile << order.getOrderNumber() << ' ' << order.getProductName() << std::endl;
+    }
+    outfile.close();
+}
+
+void printOrders(std::vector<Order> &orders){
+    for (const Order& order : orders)
+        std::cout << order.getOrderNumber() << ' ' << order.getProductName() << std::endl;
+}
+```
+**(c) Order create/search/modify** </br>
+
+
+class Order: This class has two private member variables, orderNumber (an integer) and productName (a string). </br>
+There are provided public member functions to create, modify, and access these variables:</br>
+createOrder(int number, const std::string& name): Initializes an Order object with the specified order number and product name.</br>
+
+modifyOrder(int number, const std::string& name): Modifies an existing Order object, updating its order number and product name.</br>
+
+getOrderNumber() const: Returns the order number of an Order object.</br>
+
+getProductName() const: Returns a constant reference to the product name of an Order object.</br>
+
+Order* searchOrder(std::vector<Order>& orders, int orderNumber): This function takes a reference to a vector of Orders and an order number.</br>
+ It searches for an order with the given order number in the vector and returns a pointer to that order if found, or nullptr if not found.</br>
+
+void loadOrders(std::vector<Order>& orders, const char* filename): This function reads a file specified by the filename and loads Order objects</br>
+ from the file into the provided orders vector. It reads the order number and product name from the file and uses the createOrder function to initialize</br>
+ the Order objects. If the file cannot be opened, it prints an error message.</br>
+ 
+void saveOrders(const std::vector<Order>& orders, const char* filename): This function writes the orders from the provided orders vector to a file </br>
+ specified by the filename. It writes the order number and product name of each order in the vector. If the file cannot be created, it prints an error message.</br>
+
+void printOrders(std::vector<Order>& orders): This function prints the order number and product name of each order in the provided orders vector to the standard output.</br>
+
+
+
 
 #### 3. 결론 </br>
 결과 실행 화면 + 간단한설명
 
 
 ※ 모든 각각의 그림에는 (a), (b).... 등 코드를 주고 제목에서 (a), (b)의 설명이 제시되어야 함!!!!
-※ 모든 그래프에는 가로축과 세로축에 대한 명칭과 단위가 표시되어야 함.
 
 
    ※ 표의 제목과 내용은 모두 영문으로 작성!!!!
@@ -267,7 +360,7 @@ If no matching customer is found, informs the user that the customer was not fou
 
  
 ##### REFERENCE </br>
-chatGPT
+chatGPT</br>
 wrtn 
 
 ※ 모든 참고문헌은 영문으로 작성!! 국문 참고문헌일지라도 반드시 영문으로 작성한다.
