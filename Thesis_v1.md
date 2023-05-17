@@ -72,14 +72,68 @@ enhancing user experience and convenience for all parties involved.</br>
 
 ```
 
-void printCustomers(const std::vector<Customer>& customers) {
-    std::cout << "Customers:" << std::endl;
-    for (const auto& customer : customers) {
-        std::cout << customer.getName() << ", " << customer.getAddress() << std::endl;
+class Product {
+public:
+    void setName(const std::string& name) { name_ = name; }
+    std::string getName() const { return name_; }
+
+    void setPrice(int price) { price_ = price; }
+    int getPrice() const { return price_; }
+
+    void setType(const std::string& type) { type_ = type; }
+    std::string getType() const { return type_; }
+
+    friend std::istream& operator>>(std::istream& is, Product& product) {
+        std::string line;
+        if (std::getline(is, line)) {
+            std::stringstream ss(line);
+            std::string name, type;
+            int price;
+            ss >> name >> price >> type;
+            product.setName(name);
+            product.setPrice(price);
+            product.setType(type);
+        }
+        return is;
     }
-    std::cout << std::endl;
-}
-void SearchProduct() const {
+
+    friend std::ostream& operator<<(std::ostream& os, const Product& product) {
+        os << product.getName() << " " << product.getPrice() << " " << product.getType() << std::endl;
+        return os;
+    }
+
+private:
+    std::string name_;
+    int price_;
+    std::string type_;
+};
+
+class ProductList {
+public:
+    void AddProduct() {
+        std::string name, type;
+        int price;
+
+        std::cout << "상품의 이름: ";
+        std::cin >> name;
+
+        std::cout << "상품의 가격: ";
+        std::cin >> price;
+
+        std::cout << "상품의 종류: ";
+        std::cin >> type;
+
+        Product product;
+        product.setName(name);
+        product.setPrice(price);
+        product.setType(type);
+
+        products_.push_back(product);
+
+        std::cout << "상품이 추가됨\n";
+    }
+
+    void SearchProduct() const {
         std::string name;
         std::cout << "상품 이름을 검색해보세요: ";
         std::cin >> name;
@@ -87,7 +141,7 @@ void SearchProduct() const {
         bool found = false;
         for (const auto& product : products_) {
             if (product.getName() == name) {
-                std::cout << "Product found:\n";
+                std::cout << "상품을 찾았습니다:\n";
                 std::cout << "이름: " << product.getName() << "\n";
                 std::cout << "가격: " << product.getPrice() << "\n";
                 std::cout << "종류: " << product.getType() << "\n";
@@ -103,11 +157,11 @@ void SearchProduct() const {
 
     void UpdateProductFromUserInput() {
         int index;
-        std::cout << "Enter the index of the product you want to update: ";
+        std::cout << "수정할 상품의 인덱스를 입력하세요: ";
         std::cin >> index;
 
         if (index < 0 || index >= products_.size()) {
-            std::cout << "Invalid index\n";
+            std::cout << "유효하지 않은 인덱스입니다\n";
             return;
         }
 
@@ -131,47 +185,45 @@ void SearchProduct() const {
 
     void RemoveProduct() {
         int index;
-        std::cout << "Enter the index of the product you want to remove: ";
+        std::cout << "삭제할 상품의 인덱스를 입력하세요: ";
         std::cin >> index;
 
         if (index < 0 || index >= products_.size()) {
-            std::cout << "Invalid index\n";
+            std::cout << "유효하지 않은 인덱스입니다\n";
             return;
         }
 
         products_.erase(products_.begin() + index);
 
-        std::cout << "Product removed\n";
+        std::cout << "상품이 삭제되었습니다\n";
+    }
+
+    void ListAllProducts() const {
+        for (int i = 0; i < products_.size(); ++i) {
+            std::cout << "인덱스: " << i << "\n";
+            std::cout << "이름: " << products_[i].getName() << "\n";
+            std::cout << "가격: " << products_[i].getPrice() << "\n";
+            std::cout << "종류: " << products_[i].getType() << "\n";
+            std::cout << "\n";
+        }
     }
 ```
 
-**(a) Product add/search/update/remove**</br>
+**(a) Product add/search/update/remove/list**</br>
 
-step-by-step explanation of the code:</br>
-AddProduct function: This function adds a new product to the list of products.</br>
-Collects the product information from the user (name, price, and type).</br>
-Creates a new Product object and sets its properties using the setName, setPrice, and setType methods.</br>
-Adds the new Product object to the list of products (products_) using the push_back method.</br>
-Outputs a message to inform the user that the product has been added.</br>
+The Product class represents a product with a name, price, and type. Using member functions,</br>
+you can set and get these attributes. The class also has overloaded stream operators to read and write the attributes to and from standard input and output.</br>
+The ProductList class manages a list of Product objects. It provides the following functionalities:</br>
 
-SearchProduct function: This is a const function that searches for a product in the list by name.</br>
-Prompts the user to enter a product name.</br>
-Initializes a boolean variable found to false.</br>
-Loops through the list of products (products_) and checks whether the name of the current product matches the user input. </br>
-If a match is found, the function outputs the product information (name, price, type), sets found to true, and exits the loop.</br>
-If no matching product is found, the function outputs a message to inform the user that the product was not found.</br>
+AddProduct(): Add a new product to the list by prompting the user for the product's name, price, and type.</br>
 
-UpdateProductFromUserInput function: This function updates the information of a product in the list.</br>
-Prompts the user to enter the index of the product they wish to update.</br>
-Checks whether the entered index is valid. If not, an error message is displayed, and the function returns.</br>
-Collects the new product information from the user (name, price, and type) and updates the corresponding fields of the product at the specified index.</br>
-Outputs a message to inform the user that the product information has been updated.</br>
+SearchProduct(): Search for a product by its name. If found, display its information.</br>
 
-RemoveProduct function: This function removes a product from the list based on the user's input.</br>
-Prompts the user to enter the index of the product they wish to remove.</br>
-Checks whether the entered index is valid. If not, an error message is displayed, and the function returns.</br>
-Removes the product at the specified index using the erase method of the list (products_).</br>
-Outputs a message to inform the user that the product has been removed.</br>
+UpdateProductFromUserInput(): Update an existing product by index, prompting the user for the new name, price, and type.</br>
+
+RemoveProduct(): Remove a product by its index.</br>
+
+ListAllProducts(): Display the information of all the products in the list.</br>
 
 ```
 void addCustomer(std::vector<Customer>& customers) {
