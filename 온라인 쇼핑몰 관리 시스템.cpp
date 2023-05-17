@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>  
-#include <sstream> 
+#include <sstream>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -17,7 +17,7 @@ public:
 
     void setType(const std::string& type) { type_ = type; }
     std::string getType() const { return type_; }
-
+ 
     friend std::istream& operator>>(std::istream& is, Product& product) {
         std::string line;
         if (std::getline(is, line)) {
@@ -76,7 +76,7 @@ public:
         bool found = false;
         for (const auto& product : products_) {
             if (product.getName() == name) {
-                std::cout << "Product found:\n";
+                std::cout << "상품을 찾았습니다:\n";
                 std::cout << "이름: " << product.getName() << "\n";
                 std::cout << "가격: " << product.getPrice() << "\n";
                 std::cout << "종류: " << product.getType() << "\n";
@@ -92,11 +92,11 @@ public:
 
     void UpdateProductFromUserInput() {
         int index;
-        std::cout << "Enter the index of the product you want to update: ";
+        std::cout << "수정할 상품의 인덱스를 입력하세요: ";
         std::cin >> index;
 
         if (index < 0 || index >= products_.size()) {
-            std::cout << "Invalid index\n";
+            std::cout << "유효하지 않은 인덱스입니다\n";
             return;
         }
 
@@ -120,56 +120,56 @@ public:
 
     void RemoveProduct() {
         int index;
-        std::cout << "Enter the index of the product you want to remove: ";
+        std::cout << "삭제할 상품의 인덱스를 입력하세요: ";
         std::cin >> index;
 
         if (index < 0 || index >= products_.size()) {
-            std::cout << "Invalid index\n";
+            std::cout << "유효하지 않은 인덱스입니다\n";
             return;
         }
 
         products_.erase(products_.begin() + index);
 
-        std::cout << "Product removed\n";
+        std::cout << "상품이 삭제되었습니다\n";
     }
 
     void ListAllProducts() const {
         for (int i = 0; i < products_.size(); ++i) {
-            std::cout << "Index: " << i << "\n";
-            std::cout << "Name: " << products_[i].getName() << "\n";
-            std::cout << "Price: " << products_[i].getPrice() << "\n";
-            std::cout << "Type: " << products_[i].getType() << "\n";
+            std::cout << "인덱스: " << i << "\n";
+            std::cout << "이름: " << products_[i].getName() << "\n";
+            std::cout << "가격: " << products_[i].getPrice() << "\n";
+            std::cout << "종류: " << products_[i].getType() << "\n";
             std::cout << "\n";
         }
     }
 
     void SaveProductListToFile(const std::string& filename) const {
-        std::ofstream fout(filename);
-        if (!fout) {
-            std::cout << "Failed to open file " << filename << std::endl;
-            return;
-        }
-        for (const auto& product : products_) {
-            fout << product;
-        }
-        fout.close();
-        std::cout << "상품 리스트가 파일 " << filename << "에 저장되었습니다." << std::endl;
+    std::ofstream fout(filename);
+    if (!fout) {
+        std::cout << "파일 " << filename << "을(를) 열 수 없습니다." << std::endl;
+        return;
     }
+    for (const auto& product : products_) {
+        fout << product;
+    }
+    fout.close();
+    std::cout << "상품 리스트가 파일 " << filename << "에 저장되었습니다." << std::endl;
+}
 
-    void LoadProductListFromFile(const std::string& filename) {
-        std::ifstream fin(filename);
-        if (!fin) {
-            std::cout << "Failed to open file " << filename << std::endl;
-            return;
-        }
-        products_.clear();
-        Product product;
-        while (fin >> product) {
-            products_.push_back(product);
-        }
-        fin.close();
-        std::cout << "상품 리스트가 파일 " << filename << "에서 불러오기 완료되었습니다." << std::endl;
+void LoadProductListFromFile(const std::string& filename) {
+    std::ifstream fin(filename);
+    if (!fin) {
+        std::cout << "파일 " << filename << "을(를) 열 수 없습니다." << std::endl;
+        return;
     }
+    products_.clear();
+    Product product;
+    while (fin >> product) {
+        products_.push_back(product);
+    }
+    fin.close();
+    std::cout << "상품 리스트가 파일 " << filename << "에서 불러오기 완료되었습니다." << std::endl;
+}
 
 private:
     std::vector<Product> products_;
@@ -190,16 +190,8 @@ private:
     std::string address_;
 };
 
-std::vector<Customer> loadCustomers() {
-    std::vector<Customer> customers;
-
-    // 파일 또는 데이터베이스에서 고객 정보를 불러와서 customers에 추가하는 작업
-
-    return customers;
-}
-
 void printCustomers(const std::vector<Customer>& customers) {
-    std::cout << "Customers:" << std::endl;
+    std::cout << "고객 목록:" << std::endl;
     for (const auto& customer : customers) {
         std::cout << customer.getName() << ", " << customer.getAddress() << std::endl;
     }
@@ -208,56 +200,56 @@ void printCustomers(const std::vector<Customer>& customers) {
 
 void addCustomer(std::vector<Customer>& customers) {
     std::string name, address;
-    std::cout << "Enter customer name: ";
+    std::cout << "고객 이름을 입력하세요: ";
     std::getline(std::cin, name);
-    std::cout << "Enter customer address: ";
+    std::cout << "고객 주소를 입력하세요: ";
     std::getline(std::cin, address);
     customers.push_back(Customer(name, address));
-    std::cout << "Customer information added." << std::endl << std::endl;
+    std::cout << "고객 정보가 추가되었습니다." << std::endl << std::endl;
 }
 
 void modifyCustomer(std::vector<Customer>& customers) {
     std::string search_name;
-    std::cout << "Enter customer name to modify: ";
+    std::cout << "수정할 고객의 이름을 입력하세요: ";
     std::getline(std::cin, search_name);
     for (auto& customer : customers) {
         if (customer.getName() == search_name) {
             std::string name, address;
-            std::cout << "Enter new name: ";
+            std::cout << "새로운 이름을 입력하세요: ";
             std::getline(std::cin, name);
-            std::cout << "Enter new address: ";
+            std::cout << "새로운 주소를 입력하세요: ";
             std::getline(std::cin, address);
             customer.setName(name);
             customer.setAddress(address);
-            std::cout << "Customer information modified." << std::endl << std::endl;
+            std::cout << "고객 정보가 수정되었습니다." << std::endl << std::endl;
             return;
         }
     }
-    std::cout << "Customer not found." << std::endl << std::endl;
+    std::cout << "고객을 찾을 수 없습니다." << std::endl << std::endl;
 }
 
 void deleteCustomer(std::vector<Customer>& customers) {
     std::string search_name;
-    std::cout << "Enter customer name to delete: ";
+    std::cout << "삭제할 고객의 이름을 입력하세요: ";
     std::getline(std::cin, search_name);
     for (auto it = customers.begin(); it != customers.end(); ++it) {
         if (it->getName() == search_name) {
             it = customers.erase(it);
-            std::cout << "Customer information deleted." << std::endl << std::endl;
+            std::cout << "고객 정보가 삭제되었습니다." << std::endl << std::endl;
             return;
         }
     }
-    std::cout << "Customer not found." << std::endl << std::endl;
+    std::cout << "고객을 찾을 수 없습니다." << std::endl << std::endl;
 }
 
-class Order {
+class Order {                                            
 public:
-    void createOrder(int number, const std::string& name) {
+    void createOrder(int number, const std::string& name){
         this->orderNumber = number;
         this->productName = name;
     }
 
-    void modifyOrder(int number, const std::string& name) {
+    void modifyOrder(int number, const std::string& name){
         this->orderNumber = number;
         this->productName = name;
     }
@@ -275,15 +267,15 @@ private:
     std::string productName;
 };
 
-Order* searchOrder(std::vector<Order>& orders, int orderNumber) {  //
-    for (Order& order : orders) {
+Order* searchOrder(std::vector<Order>& orders, int orderNumber){  //
+    for(Order& order : orders){
         if (order.getOrderNumber() == orderNumber)
             return &order;
     }
     return nullptr;
 }
 
-void loadOrders(std::vector<Order>& orders, const char* filename) {
+void loadOrders(std::vector<Order>& orders, const char* filename){
     std::ifstream infile(filename);
     if (!infile) {
         std::cerr << "파일을 열 수 없습니다. \n";
@@ -303,7 +295,7 @@ void loadOrders(std::vector<Order>& orders, const char* filename) {
     infile.close();
 }
 
-void saveOrders(const std::vector<Order>& orders, const char* filename) {
+void saveOrders(const std::vector<Order>& orders, const char* filename){
     std::ofstream outfile(filename);
     if (!outfile) {
         std::cerr << "파일을 저장할 수 없습니다. \n";
@@ -315,7 +307,7 @@ void saveOrders(const std::vector<Order>& orders, const char* filename) {
     outfile.close();
 }
 
-void printOrders(std::vector<Order>& orders) {
+void printOrders(std::vector<Order> &orders){
     for (const Order& order : orders)
         std::cout << order.getOrderNumber() << ' ' << order.getProductName() << std::endl;
 }
@@ -336,132 +328,130 @@ int main() {
         std::cout << "6. 고객 추가" << std::endl;
         std::cout << "7. 고객 수정" << std::endl;
         std::cout << "8. 고객 삭제" << std::endl;
-        std::cout << "9. 고객 목록" << std::endl;
-        std::cout << "10. 주문 생성" << std::endl;
-        std::cout << "11. 주문 수정" << std::endl;
-        std::cout << "12. 상품 목록 저장" << std::endl;
-        std::cout << "13. 상품 목록 불러오기" << std::endl;
-        std::cout << "14. 주문 저장" << std::endl;
-        std::cout << "15. 주문 불러오기" << std::endl;
-        std::cout << "16. 모든 주문 목록" << std::endl;
-        std::cout << "17. 종료" << std::endl;
+        std::cout << "9. 주문 생성" << std::endl;
+        std::cout << "10. 주문 수정" << std::endl;
+        std::cout << "11. 상품 목록 저장" << std::endl;
+        std::cout << "12. 상품 목록 불러오기" << std::endl;
+        std::cout << "13. 주문 저장" << std::endl;
+        std::cout << "14. 주문 불러오기" << std::endl;
+        std::cout << "15. 모든 주문 목록" << std::endl;
+        std::cout << "16. 종료" << std::endl;
         std::cout << "======================================" << std::endl;
         std::cout << "메뉴 선택: ";
         std::cin >> choice;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (choice) {
-        case 1:
-            productList.AddProduct();
-            break;
-        case 2:
-            productList.SearchProduct();
-            break;
-        case 3:
-            productList.UpdateProductFromUserInput();
-            break;
-        case 4:
-            productList.RemoveProduct();
-            break;
-        case 5:
-            productList.ListAllProducts();
-            break;
-        case 6:
-            addCustomer(customers);
-            break;
-        case 7:
-            modifyCustomer(customers);
-            break;
-        case 8:
-            deleteCustomer(customers);
-            break;
-        case 10: {
-            int orderNumber;
-            std::string productName;
-            std::cout << "주문 번호를 입력하세요: ";
-            std::cin >> orderNumber;
-            std::cout << "상품 이름을 입력하세요: ";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
+            case 1:
+                productList.AddProduct();
+                break;
+            case 2:
+                productList.SearchProduct();
+                break;
+            case 3:
+                productList.UpdateProductFromUserInput();
+                break;
+            case 4:
+                productList.RemoveProduct();
+                break;
+            case 5:
+                productList.ListAllProducts();
+                break;
+            case 6:
+                addCustomer(customers);
+                break;
+            case 7:
+                modifyCustomer(customers);
+                break;
+            case 8:
+                deleteCustomer(customers);
+                break;
+            case 9: {
+                int orderNumber;
+                std::string productName;
+                std::cout << "주문 번호를 입력하세요: ";
+                std::cin >> orderNumber;
+                std::cout << "상품 이름을 입력하세요: ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
 
-            Order order;
-            order.createOrder(orderNumber, productName);
-            orders.push_back(order);
-            std::cout << "주문이 생성되었습니다.." << std::endl << std::endl;
-            break;
-        }
-        case 11: {
-            int orderNumber;
-            std::string productName;
-            std::cout << "수정할 주문 번호를 입력하세요: ";
-            std::cin >> orderNumber;
-            std::cout << "새로운 제품 이름을 입력하세요: ";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-
-            Order* order = searchOrder(orders, orderNumber);
-            if (order != nullptr) {
-                order->modifyOrder(orderNumber, productName);
-                std::cout << "주문이 수정되었습니다." << std::endl << std::endl;
+                Order order;
+                order.createOrder(orderNumber, productName);
+                orders.push_back(order);
+                std::cout << "주문이 생성되었습니다.." << std::endl << std::endl;
+                break;
             }
-            else {
-                std::cout << "주문을 찾을 수 없습니다." << std::endl << std::endl;
+            case 10: {
+                int orderNumber;
+                std::string productName;
+                std::cout << "수정할 주문 번호를 입력하세요: ";
+                std::cin >> orderNumber;
+                std::cout << "새로운 제품 이름을 입력하세요: ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
+
+                Order* order = searchOrder(orders, orderNumber);
+                if (order != nullptr) {
+                    order->modifyOrder(orderNumber, productName);
+                    std::cout << "주문이 수정되었습니다." << std::endl << std::endl;
+                } else {
+                    std::cout << "주문을 찾을 수 없습니다." << std::endl << std::endl;
+                }
+                break;
             }
-            break;
-        }
-        case 12: {
-            std::string filename;
-            std::cout << "상품 목록을 저장할 파일 이름을 입력하세요: ";
-            std::cin >> filename;
-            productList.SaveProductListToFile(filename);
-            std::cout << "상품 목록이 파일로 저장되었습니다." << std::endl << std::endl;
-            break;
-        }
+            case 11: {
+    std::string filename;
+    std::cout << "상품 목록을 저장할 파일 이름을 입력하세요: ";
+    std::cin >> filename;
+    productList.SaveProductListToFile(filename);
+    std::cout << "상품 목록이 파일로 저장되었습니다." << std::endl << std::endl;
+    break;
+}
 
-        case 13: {
-            std::string filename;
-            std::cout << "불러올 상품 목록 파일 이름을 입력하세요: ";
-            std::cin >> filename;
-            productList.LoadProductListFromFile(filename);
-            std::cout << "상품 목록이 파일로부터 불러와졌습니다." << std::endl << std::endl;
-            break;
-        }
+case 12: {
+    std::string filename;
+    std::cout << "불러올 상품 목록 파일 이름을 입력하세요: ";
+    std::cin >> filename;
+    productList.LoadProductListFromFile(filename);
+    std::cout << "상품 목록이 파일로부터 불러와졌습니다." << std::endl << std::endl;
+    break;
+}
 
-        case 14: {
-            std::string filename;
-            std::cout << "주문을 저장할 파일 이름을 입력하세요: ";
-            std::cin.ignore();
-            std::getline(std::cin, filename);
-            saveOrders(orders, filename.c_str());
-            std::cout << "주문이 파일로 저장되었습니다." << std::endl << std::endl;
-            break;
-        }
+case 13: {
+    std::string filename;
+    std::cout << "주문을 저장할 파일 이름을 입력하세요: ";
+    std::cin.ignore();
+    std::getline(std::cin, filename);
+    saveOrders(orders, filename.c_str());
+    std::cout << "주문이 파일로 저장되었습니다." << std::endl << std::endl;
+    break;
+}
 
-        case 15: {
-            std::string filename;
-            std::cout << "불러올 주문 파일 이름을 입력하세요: ";
-            std::cin.ignore();
-            std::getline(std::cin, filename);
-            loadOrders(orders, filename.c_str());
-            std::cout << "주문이 파일로부터 불러와졌습니다." << std::endl << std::endl;
-            break;
-        }
+case 14: {
+    std::string filename;
+    std::cout << "불러올 주문 파일 이름을 입력하세요: ";
+    std::cin.ignore();
+    std::getline(std::cin, filename);
+    loadOrders(orders, filename.c_str());
+    std::cout << "주문이 파일로부터 불러와졌습니다." << std::endl << std::endl;
+    break;
+}
 
-        case 16: {
-            std::cout << "주문 목록:" << std::endl;
-            printOrders(orders);
-            std::cout << std::endl;
-            break;
-        }
+case 15: {
+    std::cout << "주문 목록:" << std::endl;
+    printOrders(orders);
+    std::cout << std::endl;
+    break;
+}
 
-        case 17: {
-            std::cout << "프로그램을 종료합니다..." << std::endl;
-            return 0;
+case 16: {
+    std::cout << "프로그램을 종료합니다..." << std::endl;
+    return 0;
 
-        default:
-            std::cout << "잘못된 선택입니다. 다시 시도하세요." << std::endl << std::endl;
-            break;
-        }
-        }
-    }
+default:
+    std::cout << "잘못된 선택입니다. 다시 시도하세요." << std::endl << std::endl;
+    break;
+}
+}
+}
 }
