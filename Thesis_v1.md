@@ -71,7 +71,6 @@ enhancing user experience and convenience for all parties involved.</br>
 -main function (Customers, Product, Order) 
 
 ```
-
 class Product {
 public:
     void setName(const std::string& name) { name_ = name; }
@@ -209,7 +208,7 @@ public:
     }
 ```
 
-**(a) Product add/search/update/remove/list**</br>
+**(a) Product part**</br>
 
 The Product class represents a product with a name, price, and type. Using member functions,</br>
 you can set and get these attributes. The class also has overloaded stream operators to read and write the attributes to and from standard input and output.</br>
@@ -226,90 +225,126 @@ RemoveProduct(): Remove a product by its index.</br>
 ListAllProducts(): Display the information of all the products in the list.</br>
 
 ```
+
+class Customer {
+public:
+    Customer(const std::string& name, const std::string& address) : name_(name), address_(address) {}
+
+    std::string getName() const { return name_; }
+    std::string getAddress() const { return address_; }
+
+    void setName(const std::string& name) { name_ = name; }
+    void setAddress(const std::string& address) { address_ = address_; }
+
+private:
+    std::string name_;
+    std::string address_;
+};
+
+void printCustomers(const std::vector<Customer>& customers) {
+    std::cout << "고객 목록:" << std::endl;
+    for (const auto& customer : customers) {
+        std::cout << customer.getName() << ", " << customer.getAddress() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
 void addCustomer(std::vector<Customer>& customers) {
     std::string name, address;
-    std::cout << "Enter customer name: ";
+    std::cout << "고객 이름을 입력하세요: ";
     std::getline(std::cin, name);
-    std::cout << "Enter customer address: ";
+    std::cout << "고객 주소를 입력하세요: ";
     std::getline(std::cin, address);
     customers.push_back(Customer(name, address));
-    std::cout << "Customer information added." << std::endl << std::endl;
+    std::cout << "고객 정보가 추가되었습니다." << std::endl << std::endl;
 }
 
 void modifyCustomer(std::vector<Customer>& customers) {
     std::string search_name;
-    std::cout << "Enter customer name to modify: ";
+    std::cout << "수정할 고객의 이름을 입력하세요: ";
     std::getline(std::cin, search_name);
     for (auto& customer : customers) {
         if (customer.getName() == search_name) {
             std::string name, address;
-            std::cout << "Enter new name: ";
+            std::cout << "새로운 이름을 입력하세요: ";
             std::getline(std::cin, name);
-            std::cout << "Enter new address: ";
+            std::cout << "새로운 주소를 입력하세요: ";
             std::getline(std::cin, address);
             customer.setName(name);
             customer.setAddress(address);
-            std::cout << "Customer information modified." << std::endl << std::endl;
+            std::cout << "고객 정보가 수정되었습니다." << std::endl << std::endl;
             return;
         }
     }
-    std::cout << "Customer not found." << std::endl << std::endl;
+    std::cout << "고객을 찾을 수 없습니다." << std::endl << std::endl;
 }
 
 void deleteCustomer(std::vector<Customer>& customers) {
     std::string search_name;
-    std::cout << "Enter customer name to delete: ";
+    std::cout << "삭제할 고객의 이름을 입력하세요: ";
     std::getline(std::cin, search_name);
     for (auto it = customers.begin(); it != customers.end(); ++it) {
         if (it->getName() == search_name) {
             it = customers.erase(it);
-            std::cout << "Customer information deleted." << std::endl << std::endl;
+            std::cout << "고객 정보가 삭제되었습니다." << std::endl << std::endl;
             return;
         }
     }
-    std::cout << "Customer not found." << std::endl << std::endl;
+    std::cout << "고객을 찾을 수 없습니다." << std::endl << std::endl;
 }
-```
- **(b)Customer add / modify / remove** </br>
+void SaveCustomersToFile(const std::vector<Customer>& customers, const std::string& filename) {
+    std::ofstream fout(filename);
+    if (!fout) {
+        std::cout << "파일 " << filename << "을(를) 열 수 없습니다." << std::endl;
+        return;
+    }
+    for (const auto& customer : customers) {
+        fout << customer.getName() << " " << customer.getAddress() << std::endl;
+    }
+    fout.close();
+    std::cout << "고객 정보가 파일 " << filename << "에 저장되었습니다." << std::endl;
+}
 
-printCustomers function: This function prints the list of customers.</br>
-Outputs a header indicating the start of the customer list.</br>
-Iterates through the customers vector, and for each customer, prints the customer's name and address using the getName and getAddress methods.</br>
-Inserts an empty line after printing the list.</br>
-
-addCustomer function: This function adds a new customer to the list of customers.</br>
-Prompts the user to enter the customer's name and address.</br>
-Uses std::getline to obtain input. This allows users to input multiline or space-separated text.</br>
-Adds a new Customer object to the customers vector with the user's inputted name and address using the push_back method.</br>
-Informs the user that the customer information has been added.</br>
-
-modifyCustomer function: This function modifies the information of an existing customer in the list.</br>
-Prompts the user to enter the name of the customer they wish to modify.</br>
-Iterates through the customers vector. If a customer with a matching name is found, the following steps are taken:</br>
-Prompts the user to enter the new name and new address.</br>
-
-Updates the customer's name and address with the new input by calling setName and setAddress methods.</br>
-Informs the user that the customer information has been modified.</br>
-Exits the loop and returns from the function.</br>
-If no matching customer is found, informs the user that the customer was not found.</br>
-
-deleteCustomer function: This function deletes a customer from the list.</br>
-Prompts the user to enter the name of the customer they wish to delete.</br>
-Iterates through the customers vector using an iterator. If a customer with a matching name is found, the following steps are taken:</br>
-Deletes the customer from the vector using the erase method and updates the iterator.</br>
-Informs the user that the customer information has been deleted.</br>
-Returns from the function.</br>
-If no matching customer is found, informs the user that the customer was not found.</br>
+void LoadCustomersFromFile(std::vector<Customer>& customers, const std::string& filename) {
+    std::ifstream fin(filename);
+    if (!fin) {
+        std::cout << "파일 " << filename << "을(를) 열 수 없습니다." << std::endl;
+        return;
+    }
+    customers.clear();
+    std::string name, address;
+    while (fin >> name >> address) {
+        customers.push_back(Customer(name, address));
+    }
+    fin.close();
+    std::cout << "고객 정보가 파일 " << filename << "으로부터 불러왔습니다." << std::endl;
+}
 
 ```
-class Order {                                             
+ **(b)Customer part** </br>
+
+A constructor that initializes the customer object with a given name and address.</br>
+Getter functions for the name and address.</br>
+Setter functions to change the name and address.</br>
+
+The following functions are provided for customer management:</br>
+
+printCustomers: prints the list of customers along with their names and addresses.</br>
+addCustomer: prompts the user to enter a name and address, creates a new customer object, and adds it to the list of customers.</br>
+modifyCustomer: searches for a customer by name, and if found, prompts the user to enter new name and address values, and modifies the customer object accordingly.</br>
+deleteCustomer: searches for a customer by name, and if found, removes it from the list of customers.</br>
+SaveCustomersToFile: saves the list of customers to a file with the given filename.</br>
+LoadCustomersFromFile: loads a list of customers from a file with the given filename and stores them in the customers vector.</br>
+
+```
+class Order {
 public:
-    void createOrder(int number, const std::string& name){
+    void createOrder(int number, const std::string& name) {
         this->orderNumber = number;
         this->productName = name;
     }
 
-    void modifyOrder(int number, const std::string& name){
+    void modifyOrder(int number, const std::string& name) {
         this->orderNumber = number;
         this->productName = name;
     }
@@ -327,15 +362,15 @@ private:
     std::string productName;
 };
 
-Order* searchOrder(std::vector<Order>& orders, int orderNumber){  //
-    for(Order& order : orders){
+Order* searchOrder(std::vector<Order>& orders, int orderNumber) {  //
+    for (Order& order : orders) {
         if (order.getOrderNumber() == orderNumber)
             return &order;
     }
     return nullptr;
 }
 
-void loadOrders(std::vector<Order>& orders, const char* filename){
+void loadOrders(std::vector<Order>& orders, const char* filename) {
     std::ifstream infile(filename);
     if (!infile) {
         std::cerr << "파일을 열 수 없습니다. \n";
@@ -355,7 +390,7 @@ void loadOrders(std::vector<Order>& orders, const char* filename){
     infile.close();
 }
 
-void saveOrders(const std::vector<Order>& orders, const char* filename){
+void saveOrders(const std::vector<Order>& orders, const char* filename) {
     std::ofstream outfile(filename);
     if (!outfile) {
         std::cerr << "파일을 저장할 수 없습니다. \n";
@@ -367,7 +402,7 @@ void saveOrders(const std::vector<Order>& orders, const char* filename){
     outfile.close();
 }
 
-void printOrders(std::vector<Order> &orders){
+void printOrders(std::vector<Order>& orders) {
     for (const Order& order : orders)
         std::cout << order.getOrderNumber() << ' ' << order.getProductName() << std::endl;
 }
@@ -401,23 +436,40 @@ void printOrders(std::vector<Order>& orders): This function prints the order num
 
 
 #### 3. 결론 </br>
-결과 실행 화면 + 간단한설명
 
+<img src="실행 화면/1메뉴.png">
+**(a) excute screen **
+categorized into customer, order, and product menu</br>
 
-※ 모든 각각의 그림에는 (a), (b).... 등 코드를 주고 제목에서 (a), (b)의 설명이 제시되어야 함!!!!
+<img src="실행 화면/2-1고객정보추가.png">
+**(b) AddCustomer ** 
+Enter and add customer information</br>
 
+<img src="실행 화면/2-2고객출력.png">
+**(c) PrintCustomer ** 
+Prints out a list of saved customers</br>
 
-   ※ 표의 제목과 내용은 모두 영문으로 작성!!!!
+<img src="실행 화면/3-1상품추가.png">
+**(d) Add Product**
+Enter product information and add it to the list</br>
 
+<img src="실행 화면/3-2상품검색.png">
+**(e) Search Product **
+Search for items stored in the list</br>
+
+<img src="실행 화면/3-3상품목록.png">
+**(f) ProductList **
+Show products stored in the list</br>
+<img src="실행 화면/4-1주문추가.png">
+**(g) Add Order **
+Add an order and save it to the list</br>
+<img src="실행 화면/4-2주문출력.png">
+**(h) Print Order **
+Loads and prints orders stored in the list</br>
+          
 
  
 ##### REFERENCE </br>
 chatGPT</br>
 wrtn 
-
-※ 모든 참고문헌은 영문으로 작성!! 국문 참고문헌일지라도 반드시 영문으로 작성한다.
-※ 저자명 표기법은 이름 다음에 성이 오도록 하며 이름은 첫 문자의 약어로 표현하며 (예를 들면, Shi-Wen(이름) Deng(성) 일 경우 S. Deng으로 Shi(첫번째 이름) Wen(두번째 이름) Deng(성) 일 경우 S.W. Deng로 표기), 저자가 6명이상일 경우 6명의 성명만 나열하고 그 다음에 “et al.” 로 표기한다.
-※ 논문제목, 논문지명은 전치사 및 접속사 등을 제외하고는 모든 단어의 첫글자는 대문자로 표기하며 논문지명, 도서명, 보고서명, 학술회의 초록명 등은 이탤릭체로 표기한다.
-※ 논문지명, 학술회의명은 약어를 사용하지 않고 전체를 풀어서 작성한다.
-※ 기타 설명되지 않은 부분은 아래의 형식을 준용한다.
 
