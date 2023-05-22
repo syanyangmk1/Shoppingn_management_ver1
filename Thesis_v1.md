@@ -438,38 +438,38 @@ void printOrders(std::vector<Order>& orders): This function prints the order num
 #### 3. 결론 </br>
 
 <img src="실행 화면/1메뉴.png">
-**(a) excute screen **</br>
+(a) excute screen </br>
 categorized into customer, order, and product menu</br>
 
 <img src="실행 화면/2-1고객정보추가.png">
-**(b) AddCustomer** </br>
+(b) AddCustomer </br>
 Enter and add customer information</br>
 
 <img src="실행 화면/2-2고객출력.png">
-**(c) PrintCustomer** </br>
+(c) PrintCustomer </br>
 Prints out a list of saved customers</br>
 
 <img src="실행 화면/3-1상품추가.png">
-**(d) Add Product**</br>
+(d) Add Product</br>
 Enter product information and add it to the list</br>
 
 <img src="실행 화면/3-2상품검색.png">
-**(e) Search Product**</br>
+(e) Search Product</br>
 Search for items stored in the list</br>
 
 <img src="실행 화면/3-3상품목록.png">
-**(f) ProductList**</br>
+(f) ProductList</br>
 Show products stored in the list</br>
 <img src="실행 화면/4-1주문추가.png">
-**(g) Add Order**</br>
+(g) Add Order</br>
 Add an order and save it to the list</br>
 <img src="실행 화면/4-2주문출력.png">
-**(h) Print Order**</br>
+(h) Print Order</br>
 Loads and prints orders stored in the list</br>
           
 
  
-##### REFERENCE </br>
+##### - REFERENCE </br>
 chatGPT</br>
 wrtn 
 
