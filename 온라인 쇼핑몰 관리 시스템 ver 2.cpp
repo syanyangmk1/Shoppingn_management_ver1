@@ -506,4 +506,38 @@ int main() {
     }
 
     return 0;
-}
+}]
+
+/*
+1. 고객 관리:
+
+Customer 클래스를 사용하여 고객 정보를 저장하고 관리합니다.
+std::vector<Customer> customers를 사용하여 고객 목록을 저장합니다.
+printCustomers 함수를 사용하여 고객 목록을 출력합니다.
+addCustomer 함수를 사용하여 새로운 고객을 추가합니다.
+modifyCustomer 함수를 사용하여 고객 정보를 수정합니다.
+deleteCustomer 함수를 사용하여 고객 정보를 삭제합니다.
+SaveCustomersToFile 함수를 사용하여 고객 정보를 파일에 저장합니다.
+LoadCustomersFromFile 함수를 사용하여 파일로부터 고객 정보를 불러옵니다.
+
+2. 상품 관리:
+
+Product 클래스를 사용하여 상품 정보를 저장하고 관리합니다.
+ProductList 클래스를 사용하여 상품 목록을 저장합니다.
+AddProduct 함수를 사용하여 새로운 상품을 추가합니다.
+SearchProduct 함수를 사용하여 상품을 검색합니다.
+UpdateProductFromUserInput 함수를 사용하여 상품 정보를 업데이트합니다.
+RemoveProduct 함수를 사용하여 상품을 삭제합니다.
+ListAllProducts 함수를 사용하여 모든 상품 목록을 출력합니다.
+SaveProductListToFile 함수를 사용하여 상품 목록을 파일에 저장합니다.
+LoadProductListFromFile 함수를 사용하여 파일로부터 상품 목록을 불러옵니다.
+
+3.주문 관리:
+
+Order 클래스를 사용하여 주문 정보를 저장하고 관리합니다.
+std::vector<Order> orders를 사용하여 주문 목록을 저장합니다.
+searchOrder 함수를 사용하여 주문을 검색합니다.
+loadOrders 함수를 사용하여 파일로부터 주문 정보를 불러옵니다.
+saveOrders 함수를 사용하여 주문 목록을 파일에 저장합니다.
+printOrders 함수를 사용하여 주문 목록을 출력합니다.
+*/
